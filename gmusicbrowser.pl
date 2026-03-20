@@ -1770,7 +1770,7 @@ sub forksystem
 		else { exec @cmd; }	#execute one command in the child process
 		POSIX::_exit(0);
 	}
-	Glib::child_watch_add(Glib::G_PRIORITY_LOW,$ChildPID,sub {}) if $ChildPID; #reap child via GLib to avoid zombies
+	Glib::Child->watch_add($ChildPID, sub {}, undef, Glib::G_PRIORITY_LOW) if $ChildPID; #reap child via GLib to avoid zombies
 }
 
 
@@ -2775,7 +2775,7 @@ sub SaveTags	#save tags _and_ settings
 	if ($fork)
 	{	my $pid= fork;
 		if (!defined $pid) { $fork=undef; } # error, fallback to saving in current process
-		elsif ($pid) { Glib::child_watch_add(Glib::G_PRIORITY_LOW,$pid,sub {}); return } #reap child via GLib to avoid zombies
+		elsif ($pid) { Glib::Child->watch_add($pid, sub {}, undef, Glib::G_PRIORITY_LOW); return } #reap child via GLib to avoid zombies
 	}
 
 	setlocale(LC_NUMERIC, 'C');

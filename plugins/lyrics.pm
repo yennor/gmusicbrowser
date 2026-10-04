@@ -14,7 +14,7 @@ desc	Search and display lyrics
 package GMB::Plugin::LYRICS;
 use strict;
 use warnings;
-use utf8::all;
+use utf8;
 require 'simple_http.pm';
 our @ISA;
 BEGIN {push @ISA,'GMB::Context';}
